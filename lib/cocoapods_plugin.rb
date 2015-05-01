@@ -39,9 +39,35 @@ module CocoaPodsStats
         end.map do |spec|
           { :name => spec.name, :version => spec.version.to_s }
         end
-            
+
+        # These UUIDs come from the Xcode project.
+        # I generated a new project a few times, and got minor changes
+        # similar to what I'd expect based on a timestamp based UUID
+        #
+        # /* Begin PBXNativeTarget section */
+        #     6042DA7C1AF34DF600070256 /* Hello */ = {
+        #
+        # /* Begin PBXNativeTarget section */
+        #     6042DAAE1AF34E3C00070256 /* Hello */ = {
+        #
+        # /* Begin PBXNativeTarget section */
+        #     6042DAE01AF34F0600070256 /* Hello */ = {
+        #
+        # /* Begin PBXNativeTarget section */
+        #     6042DB121AF34F4600070256 /* Hello2 */ = {
+        #
+        # /* Begin PBXNativeTarget section */
+        #		  6042DB441AF34F7F00070256 /* Trogdor */ = {
+        # 
+        # This means we send nothing remotely confidential.
+        # 
+        
+        # I've never seen this as more than one item?
+        # could be when you use `link_with` ?
+        uuid = target.user_target_uuids.first
+        
         analytics_targets << {
-          :uuid => target.user_target_uuids.first,
+          :uuid => uuid,
           :pods => pods
         }
       end
