@@ -63,11 +63,12 @@ module CocoaPodsStats
         # 
         
         # I've never seen this as more than one item?
-        # could be when you use `link_with` ?
+        # could be when you use `link_with`?
         uuid = target.user_target_uuids.first
         
         analytics_targets << {
           :uuid => uuid,
+          :type => target.product_type,
           :pods => pods
         }
       end
