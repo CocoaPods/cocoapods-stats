@@ -13,22 +13,21 @@ module CocoaPodsStats
       
       # Does the master specs repo exist?
       master_specs_repo = File.expand_path "~/.cocoapods/repos/master"
-      unless File.directory? master_specs_repo
-        return
-      end
-
+      return unless File.directory? master_specs_repo
+      
       # Is the master specs repo actually the CocoaPods OSS one?      
       Dir.chdir master_specs_repo do
         git_remote_details = `git remote -v`
-        unless git_remote_details.include? "CocoaPods/Specs"
-          return
-        end
+        return unless git_remote_details.include? "CocoaPods/Specs"
       end
 
       # Loop though all targets in the pod
       # generate a collection of hashes
       
       targets = context.umbrella_targets.map do |target|
+        # We'll need this for target UUID lookup
+        project = Xcodeproj::Project.open(target.user_project_path)
+        
         root_specs = target.specs.map(&:root).uniq
         
         # As it's hard to look up the source of a pod, we
@@ -59,16 +58,23 @@ module CocoaPodsStats
         # /* Begin PBXNativeTarget section */
         #		  6042DB441AF34F7F00070256 /* Trogdor */ = {
         # 
+        #    Multiple days later
+        # /* Begin PBXNativeTarget section */
+        #     601142661AF7CD3B00F070A5 /* Burninator */ = {
+        #
         # This means we send nothing remotely confidential.
         # 
         
         # I've never seen this as more than one item?
         # could be when you use `link_with`?
         uuid = target.user_target_uuids.first
+        project_target = project.objects_by_uuid[uuid]
         
-        analytics_targets << {
-          :uuid => uuid,
-          :type => target.product_type,
+        # Send in a hash'd UUID anyway, a second layer
+        # of misdirection can't hurt
+        {
+          :uuid => uuid.hash,
+          :type => project_target.product_type,
           :pods => pods
         }
       end
