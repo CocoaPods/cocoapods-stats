@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     cocoapods-stats (0.0.1)
+      nap
 
 GEM
   remote: https://rubygems.org/

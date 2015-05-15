@@ -1,3 +1,4 @@
+require 'rest'
 
 module CocoaPodsStats
     
@@ -82,10 +83,16 @@ module CocoaPodsStats
       # We need to make them unique per target UUID, config based pods
       # will throw this off. I feel like the answer is to merge all pods
       # per each target to make it one covering all cases.
-      
-      puts targets
-      
+            
       # Send the analytics stuff up
+      
+      response = REST.post('http://stats.cocoapods.org/api/v1/install', {
+        :targets => targets,
+        :cocoapods_version => "1.0.3"
+      }.to_json,
+      {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
+
+      puts response.body
     end
   end
 end
