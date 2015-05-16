@@ -1,4 +1,5 @@
 require 'rest'
+require 'digest'
 
 module CocoaPodsStats
     
@@ -71,10 +72,10 @@ module CocoaPodsStats
         uuid = target.user_target_uuids.first
         project_target = project.objects_by_uuid[uuid]
         
-        # Send in a hash'd UUID anyway, a second layer
+        # Send in a digested'd UUID anyway, a second layer
         # of misdirection can't hurt
         {
-          :uuid => uuid.hash,
+          :uuid => Digest::SHA256.hexdigest(uuid),
           :type => project_target.product_type,
           :pods => pods
         }
@@ -83,15 +84,19 @@ module CocoaPodsStats
       # We need to make them unique per target UUID, config based pods
       # will throw this off. I feel like the answer is to merge all pods
       # per each target to make it one covering all cases.
-            
-      # Send the analytics stuff up
       
-      response = REST.post('http://stats.cocoapods.org/api/v1/install', {
+      # Send the analytics stuff up
+      # begin
+        response = REST.post('http://stats-cocoapods-org.herokuapp.com/api/v1/install', {
         :targets => targets,
-        :cocoapods_version => "1.0.3"
-      }.to_json,
-      {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
+        :cocoapods_version => Pod::VERSION
+        }.to_json,
+        {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
 
+      # rescue StandardError => error
+    #     puts error
+    #   end
+    #    
       puts response.body
     end
   end
