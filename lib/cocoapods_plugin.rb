@@ -5,13 +5,11 @@ module CocoaPodsStats
     
   Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, user_options|
     require 'cocoapods'
+  
+    # Allow opting out
+    return if ENV["DISABLE_COCOAPODS_STATS"]
     
-      Pod::UI.section 'Sending Stats' do
-    
-      # Allow opting out
-      if ENV["DISABLE_COCOAPODS_STATS"]
-        return
-      end
+    Pod::UI.section 'Sending Stats' do
       
       # Does the master specs repo exist?
       master_specs_repo = File.expand_path "~/.cocoapods/repos/master"
@@ -84,19 +82,23 @@ module CocoaPodsStats
       # We need to make them unique per target UUID, config based pods
       # will throw this off. I feel like the answer is to merge all pods
       # per each target to make it one covering all cases.
+
+      # Logs out for now:
+      
+      Pod::UI.puts targets
       
       # Send the analytics stuff up
-      # begin
+      begin
         response = REST.post('http://stats-cocoapods-org.herokuapp.com/api/v1/install', {
-        :targets => targets,
-        :cocoapods_version => Pod::VERSION
+          :targets => targets,
+          :cocoapods_version => Pod::VERSION
         }.to_json,
         {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
 
-      # rescue StandardError => error
-    #     puts error
-    #   end
-    #    
+      rescue StandardError => error
+        puts error
+      end
+
       puts response.body
     end
   end
