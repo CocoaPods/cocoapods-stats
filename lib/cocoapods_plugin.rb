@@ -18,7 +18,7 @@ module CocoaPodsStats
 
       return unless master.url.end_with?('CocoaPods/Specs.git')
 
-      master_pods = Set(master.pods)
+      master_pods = Set.new(master.pods)
 
       # Loop though all targets in the pod
       # generate a collection of hashes
@@ -52,7 +52,7 @@ module CocoaPodsStats
           :uuid => Digest::SHA256.hexdigest(uuid),
           :type => project_target.product_type,
           :pods => pods,
-          :platform => project_target.platform
+          :platform => project_target.platform_name
         }
       end
 
