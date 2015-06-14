@@ -38,31 +38,8 @@ module CocoaPodsStats
           { :name => spec.name, :version => spec.version.to_s }
         end
 
-        # These UUIDs come from the Xcode project.
-        # I generated a new project a few times, and got minor changes
-        # similar to what I'd expect based on a timestamp based UUID
-        #
-        # /* Begin PBXNativeTarget section */
-        #     6042DA7C1AF34DF600070256 /* Hello */ = {
-        #
-        # /* Begin PBXNativeTarget section */
-        #     6042DAAE1AF34E3C00070256 /* Hello */ = {
-        #
-        # /* Begin PBXNativeTarget section */
-        #     6042DAE01AF34F0600070256 /* Hello */ = {
-        #
-        # /* Begin PBXNativeTarget section */
-        #     6042DB121AF34F4600070256 /* Hello2 */ = {
-        #
-        # /* Begin PBXNativeTarget section */
-        #		  6042DB441AF34F7F00070256 /* Trogdor */ = {
-        #
-        #    Multiple days later
-        # /* Begin PBXNativeTarget section */
-        #     601142661AF7CD3B00F070A5 /* Burninator */ = {
-        #
-        # This means we send nothing remotely confidential.
-        #
+        # These UUIDs come from the Xcode project
+        # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
 
         # I've never seen this as more than one item?
         # could be when you use `link_with`?
@@ -74,7 +51,8 @@ module CocoaPodsStats
         {
           :uuid => Digest::SHA256.hexdigest(uuid),
           :type => project_target.product_type,
-          :pods => pods
+          :pods => pods,
+          :platform => project_target.platform
         }
       end
 
@@ -90,7 +68,8 @@ module CocoaPodsStats
       begin
         response = REST.post('http://stats-cocoapods-org.herokuapp.com/api/v1/install', {
           :targets => targets,
-          :cocoapods_version => Pod::VERSION
+          :cocoapods_version => Pod::VERSION,
+          :pod_try => false
         }.to_json,
         {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
 
