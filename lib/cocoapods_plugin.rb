@@ -49,17 +49,23 @@ module CocoaPodsStats
     end
   end
 
+  class OptOutValidator
+    def validates?
+      return false if ENV["COCOAPODS_DISABLE_STATS"]
+      true
+    end
+  end
+
   Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, user_options|
     require 'cocoapods'
 
-    # Allow opting out
-    return if ENV["COCOAPODS_DISABLE_STATS"]
+    validator = OptOutValidator.new
+    return if validator.validates?
+
+    validator = SpecsRepoValidator.new
+    return if validator.validates? Pod::SourcesManager.master.first
 
     Pod::UI.section 'Sending Stats' do
-
-      validator = SpecsRepoValidator.new
-      return if validator.validates? Pod::SourcesManager.master.first
-
       master_pods = Set.new(master.pods)
 
       # Loop though all targets in the pod
