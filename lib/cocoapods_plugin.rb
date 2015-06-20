@@ -1,31 +1,13 @@
 require 'digest'
 require 'set'
-
 require 'rest'
 
 module CocoaPodsStats
 
-  Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, user_options|
-    require 'cocoapods'
+  class TargetMapper
 
-    # Allow opting out
-    return if ENV["COCOAPODS_DISABLE_STATS"]
-
-    Pod::UI.section 'Sending Stats' do
-
-      master = Pod::SourcesManager.master.first
-      return unless master
-
-      return unless master.url.end_with?('CocoaPods/Specs.git')
-
-      master_pods = Set.new(master.pods)
-
-      # Loop though all targets in the pod
-      # generate a collection of hashes
-
-      targets = context.umbrella_targets.map do |target|
-        # We'll need this for target UUID lookup
-        project = Xcodeproj::Project.open(target.user_project_path)
+    def pods_from_project context, project, master_pods
+      context.umbrella_targets.map do |target|
 
         root_specs = target.specs.map(&:root).uniq
 
@@ -56,12 +38,40 @@ module CocoaPodsStats
         }
       end
 
-      # We need to make them unique per target UUID, config based pods
-      # will throw this off. I feel like the answer is to merge all pods
-      # per each target to make it one covering all cases.
+    end
+  end
+
+  class SpecsRepoValidator
+    def validates? sources_manager
+      return false unless sources_manager
+      return false unless sources_manager.url.end_with? 'CocoaPods/Specs.git'
+      true
+    end
+  end
+
+  Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, user_options|
+    require 'cocoapods'
+
+    # Allow opting out
+    return if ENV["COCOAPODS_DISABLE_STATS"]
+
+    Pod::UI.section 'Sending Stats' do
+
+      validator = SpecsRepoValidator.new
+      return if validator.validates? Pod::SourcesManager.master.first
+
+      master_pods = Set.new(master.pods)
+
+      # Loop though all targets in the pod
+      # generate a collection of hashes
+
+      # We'll need this for target UUID lookup
+      project = Xcodeproj::Project.open(target.user_project_path)
+
+      mapper = TargetMapper.new
+      targets = mapper.pods_from_project context, project, master_pods
 
       # Logs out for now:
-
       Pod::UI.puts targets
 
       # Send the analytics stuff up

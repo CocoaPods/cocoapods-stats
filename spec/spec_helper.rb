@@ -5,6 +5,7 @@ $:.unshift((ROOT + 'spec').to_s)
 
 require 'bundler/setup'
 require 'bacon'
+require 'mocha-on-bacon'
 require 'cocoapods'
 
 require 'cocoapods_plugin'
