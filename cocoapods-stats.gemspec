@@ -6,11 +6,11 @@ require 'cocoapods-stats/gem_version.rb'
 Gem::Specification.new do |spec|
   spec.name          = 'cocoapods-stats'
   spec.version       = CocoapodsStats::VERSION
-  spec.authors       = ['Orta Therox']
-  spec.email         = ['orta.therox@gmail.com']
-  spec.description   = %q{A short description of cocoapods-stats.}
-  spec.summary       = %q{A longer description of cocoapods-stats.}
-  spec.homepage      = 'https://github.com/EXAMPLE/cocoapods-stats'
+  spec.authors       = ['Orta Therox', 'Samuel Giddins']
+  spec.email         = ['orta.therox@gmail.com', 'segiddins@segiddins.me']
+  spec.description   = "Uploads statistics for Pod Analytics."
+  spec.summary       = "Uploads installation version data to stats.cocoapods.org to provide per-Pod analytics."
+  spec.homepage      = 'https://github.com/cocoapods/cocoapods-stats'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
