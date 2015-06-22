@@ -4,7 +4,7 @@ describe CocoaPodsStats::SpecsRepoValidator do
   describe 'validates' do
     it 'returns no when given a nil' do
       subject = CocoaPodsStats::SpecsRepoValidator.new
-      subject.validates?(nil).should == false
+      subject.should.not.validates?(nil)
     end
 
     it 'returns no when given a master repo that is not cocoapods/specs' do
@@ -12,7 +12,7 @@ describe CocoaPodsStats::SpecsRepoValidator do
       sources.stubs(:url).returns('CocoaPods/NotSpecs.git')
 
       subject = CocoaPodsStats::SpecsRepoValidator.new
-      subject.validates?(sources).should == false
+      subject.should.not.validates?(sources)
     end
 
     it 'returns yes when given a master repo that is cocoapods/specs' do
@@ -20,7 +20,7 @@ describe CocoaPodsStats::SpecsRepoValidator do
       sources.stubs(:url).returns('CocoaPods/Specs.git')
 
       subject = CocoaPodsStats::SpecsRepoValidator.new
-      subject.validates?(sources).should == true
+      subject.should.validates?(sources)
     end
   end
 end

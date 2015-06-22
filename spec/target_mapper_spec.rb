@@ -1,4 +1,5 @@
 require File.expand_path('../spec_helper', __FILE__)
+require 'cocoapods_stats/target_mapper'
 
 describe CocoaPodsStats::TargetMapper do
   describe 'pods_from_project' do

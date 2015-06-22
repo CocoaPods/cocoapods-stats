@@ -6,14 +6,14 @@ describe CocoaPodsStats::OptOutValidator do
       ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
       subject = CocoaPodsStats::OptOutValidator.new
-      subject.validates?.should == false
+      subject.should.not.validates
     end
 
     it 'returns yes when given a master repo that is cocoapods/specs' do
       ENV['COCOAPODS_DISABLE_STATS'] = nil
 
       subject = CocoaPodsStats::OptOutValidator.new
-      subject.validates?.should == true
+      subject.should.validates
     end
   end
 end

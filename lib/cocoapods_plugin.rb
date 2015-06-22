@@ -1,65 +1,27 @@
-require 'digest'
-require 'set'
-require 'rest'
-
 module CocoaPodsStats
-  API_URL = 'http://stats-cocoapods-org.herokuapp.com/api/v1/install'
-
-  class TargetMapper
-    def pods_from_project(context, project, master_pods)
-      context.umbrella_targets.map do |target|
-        root_specs = target.specs.map(&:root).uniq
-
-        # As it's hard to look up the source of a pod, we
-        # can check if the pod exists in the master specs repo though
-
-        pods = root_specs.
-          select { |spec| master_pods.include?(spec.name) }.
-          map { |spec| { :name => spec.name, :version => spec.version.to_s } }
-
-        # These UUIDs come from the Xcode project
-        # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
-
-        # I've never seen this as more than one item?
-        # could be when you use `link_with`?
-        uuid = target.user_target_uuids.first
-        project_target = project.objects_by_uuid[uuid]
-
-        # Send in a digested'd UUID anyway, a second layer
-        # of misdirection can't hurt
-        {
-          :uuid => Digest::SHA256.hexdigest(uuid),
-          :type => project_target.product_type,
-          :pods => pods,
-          :platform => project_target.platform_name,
-        }
-      end
-    end
-  end
-
   class SpecsRepoValidator
-    def validates?(sources_manager)
-      return false unless sources_manager
-      return false unless sources_manager.url.end_with? 'CocoaPods/Specs.git'
-      true
+    def validates?(source)
+      source && source.url.end_with?('CocoaPods/Specs.git')
     end
   end
 
   class OptOutValidator
     def validates?
-      return false if ENV['COCOAPODS_DISABLE_STATS']
-      true
+      ENV['COCOAPODS_DISABLE_STATS'].nil?
     end
   end
 
   Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, _|
+    require 'set'
     require 'cocoapods'
+    require 'cocoapods_stats/target_mapper'
+    require 'cocoapods_stats/sender'
 
     validator = OptOutValidator.new
-    break if validator.validates?
+    break unless validator.validates?
 
     validator = SpecsRepoValidator.new
-    break if validator.validates? Pod::SourcesManager.master.first
+    break unless validator.validates?(Pod::SourcesManager.master.first)
 
     Pod::UI.section 'Sending Stats' do
       master_pods = Set.new(master.pods)
@@ -76,24 +38,11 @@ module CocoaPodsStats
       # Logs out for now:
       Pod::UI.puts targets
 
+      is_pod_try = defined?(Pod::Command::Try::TRY_TMP_DIR) &&
+        context.sandbox_root.begin_with?(Pod::Command::Try::TRY_TMP_DIR.to_s)
+
       # Send the analytics stuff up
-      begin
-        response = REST.post(
-          API_URL,
-          {
-            :targets => targets,
-            :cocoapods_version => Pod::VERSION,
-            :pod_try => false,
-          }.to_json,
-          'Accept' => 'application/json',
-          'Content-Type' => 'application/json',
-        )
-
-      rescue StandardError => error
-        puts error
-      end
-
-      puts response.body
+      Sender.new.send(targets, :pod_try => is_pod_try)
     end
   end
 end
