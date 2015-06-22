@@ -1,7 +1,7 @@
 require 'pathname'
 ROOT = Pathname.new(File.expand_path('../../', __FILE__))
-$:.unshift((ROOT + 'lib').to_s)
-$:.unshift((ROOT + 'spec').to_s)
+$LOAD_PATH.unshift((ROOT + 'lib').to_s)
+$LOAD_PATH.unshift((ROOT + 'spec').to_s)
 
 require 'bundler/setup'
 require 'bacon'
@@ -13,7 +13,6 @@ require 'cocoapods_plugin'
 #-----------------------------------------------------------------------------#
 
 module Pod
-
   # Disable the wrapping so the output is deterministic in the tests.
   #
   UI.disable_wrap = true
@@ -32,7 +31,7 @@ module Pod
         @output << "#{message}\n"
       end
 
-      def warn(message = '', actions = [])
+      def warn(message = '', _actions = [])
         @warnings << "#{message}\n"
       end
 

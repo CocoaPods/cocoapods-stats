@@ -2,9 +2,8 @@ require File.expand_path('../spec_helper', __FILE__)
 
 describe CocoaPodsStats::OptOutValidator do
   describe 'validates' do
-
     it 'returns no when there is an env var' do
-      ENV['COCOAPODS_DISABLE_STATS'] = "true"
+      ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
       subject = CocoaPodsStats::OptOutValidator.new
       subject.validates?.should == false
@@ -16,6 +15,5 @@ describe CocoaPodsStats::OptOutValidator do
       subject = CocoaPodsStats::OptOutValidator.new
       subject.validates?.should == true
     end
-
   end
 end

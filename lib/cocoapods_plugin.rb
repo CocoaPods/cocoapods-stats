@@ -3,22 +3,19 @@ require 'set'
 require 'rest'
 
 module CocoaPodsStats
+  API_URL = 'http://stats-cocoapods-org.herokuapp.com/api/v1/install'
 
   class TargetMapper
-
-    def pods_from_project context, project, master_pods
+    def pods_from_project(context, project, master_pods)
       context.umbrella_targets.map do |target|
-
         root_specs = target.specs.map(&:root).uniq
 
         # As it's hard to look up the source of a pod, we
         # can check if the pod exists in the master specs repo though
 
-        pods = root_specs.select do |spec|
-          master_pods.include?(spec.name)
-        end.map do |spec|
-          { :name => spec.name, :version => spec.version.to_s }
-        end
+        pods = root_specs.
+          select { |spec| master_pods.include?(spec.name) }.
+          map { |spec| { :name => spec.name, :version => spec.version.to_s } }
 
         # These UUIDs come from the Xcode project
         # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
@@ -34,15 +31,14 @@ module CocoaPodsStats
           :uuid => Digest::SHA256.hexdigest(uuid),
           :type => project_target.product_type,
           :pods => pods,
-          :platform => project_target.platform_name
+          :platform => project_target.platform_name,
         }
       end
-
     end
   end
 
   class SpecsRepoValidator
-    def validates? sources_manager
+    def validates?(sources_manager)
       return false unless sources_manager
       return false unless sources_manager.url.end_with? 'CocoaPods/Specs.git'
       true
@@ -51,19 +47,19 @@ module CocoaPodsStats
 
   class OptOutValidator
     def validates?
-      return false if ENV["COCOAPODS_DISABLE_STATS"]
+      return false if ENV['COCOAPODS_DISABLE_STATS']
       true
     end
   end
 
-  Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, user_options|
+  Pod::HooksManager.register('cocoapods-stats', :post_install) do |context, _|
     require 'cocoapods'
 
     validator = OptOutValidator.new
-    return if validator.validates?
+    break if validator.validates?
 
     validator = SpecsRepoValidator.new
-    return if validator.validates? Pod::SourcesManager.master.first
+    break if validator.validates? Pod::SourcesManager.master.first
 
     Pod::UI.section 'Sending Stats' do
       master_pods = Set.new(master.pods)
@@ -82,12 +78,16 @@ module CocoaPodsStats
 
       # Send the analytics stuff up
       begin
-        response = REST.post('http://stats-cocoapods-org.herokuapp.com/api/v1/install', {
-          :targets => targets,
-          :cocoapods_version => Pod::VERSION,
-          :pod_try => false
-        }.to_json,
-        {'Accept' => 'application/json, */*', 'Content-Type' => 'application/json'})
+        response = REST.post(
+          API_URL,
+          {
+            :targets => targets,
+            :cocoapods_version => Pod::VERSION,
+            :pod_try => false,
+          }.to_json,
+          'Accept' => 'application/json',
+          'Content-Type' => 'application/json',
+        )
 
       rescue StandardError => error
         puts error
