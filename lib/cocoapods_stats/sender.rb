@@ -2,7 +2,7 @@ require 'rest'
 
 module CocoaPodsStats
   class Sender
-    API_URL = 'http://stats-cocoapods-org.herokuapp.com/api/v1/install'
+    API_URL = 'https://stats.cocoapods.org/api/v1/install'
 
     def send(targets, pod_try: false)
       REST.post(
