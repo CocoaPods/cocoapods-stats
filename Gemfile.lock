@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     cocoapods-stats (0.0.1)
-      nap
+      nap (~> 0.8)
 
 GEM
   remote: https://rubygems.org/
@@ -70,7 +70,7 @@ DEPENDENCIES
   cocoapods
   cocoapods-stats!
   mocha-on-bacon
-  rake
+  rake (~> 10.0)
 
 BUNDLED WITH
    1.10.4
