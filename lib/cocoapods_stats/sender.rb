@@ -16,7 +16,7 @@ module CocoaPodsStats
         'Content-Type' => 'application/json',
       )
     rescue REST::Error => e
-      UI.message "Failed to send stats:\n\n#{e}"
+      Pod::UI.message "Failed to send stats:\n\n#{e}"
     end
   end
 end

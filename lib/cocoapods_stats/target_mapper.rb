@@ -1,9 +1,12 @@
 require 'digest'
+require 'xcodeproj'
 
 module CocoaPodsStats
   class TargetMapper
-    def pods_from_project(context, project, master_pods)
-      context.umbrella_targets.map do |target|
+    # Loop though all targets in the pod
+    # generate a collection of hashes
+    def pods_from_project(context, master_pods)
+      context.umbrella_targets.flat_map do |target|
         root_specs = target.specs.map(&:root).uniq
 
         # As it's hard to look up the source of a pod, we
@@ -16,19 +19,20 @@ module CocoaPodsStats
         # These UUIDs come from the Xcode project
         # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
 
-        # I've never seen this as more than one item?
-        # could be when you use `link_with`?
-        uuid = target.user_target_uuids.first
-        project_target = project.objects_by_uuid[uuid]
+        project = Xcodeproj::Project.open(target.user_project_path)
 
-        # Send in a digested'd UUID anyway, a second layer
-        # of misdirection can't hurt
-        {
-          :uuid => Digest::SHA256.hexdigest(uuid),
-          :type => project_target.product_type,
-          :pods => pods,
-          :platform => project_target.platform_name,
-        }
+        target.user_target_uuids.map do |uuid|
+          project_target = project.objects_by_uuid[uuid]
+
+          # Send in a digested'd UUID anyway, a second layer
+          # of misdirection can't hurt
+          {
+            :uuid => Digest::SHA256.hexdigest(uuid),
+            :type => project_target.product_type,
+            :pods => pods,
+            :platform => project_target.platform_name,
+          }
+        end
       end
     end
   end

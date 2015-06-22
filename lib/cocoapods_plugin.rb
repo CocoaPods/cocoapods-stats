@@ -20,26 +20,23 @@ module CocoaPodsStats
     validator = OptOutValidator.new
     break unless validator.validates?
 
+    master_source = Pod::SourcesManager.master.first
     validator = SpecsRepoValidator.new
-    break unless validator.validates?(Pod::SourcesManager.master.first)
+    break unless validator.validates?(master_source)
 
-    Pod::UI.section 'Sending Stats' do
-      master_pods = Set.new(master.pods)
-
-      # Loop though all targets in the pod
-      # generate a collection of hashes
-
-      # We'll need this for target UUID lookup
-      project = Xcodeproj::Project.open(target.user_project_path)
+    Pod::UI.titled_section 'Sending stats' do
+      master_pods = Set.new(master_source.pods)
 
       mapper = TargetMapper.new
-      targets = mapper.pods_from_project context, project, master_pods
+      targets = mapper.pods_from_project(context, master_pods)
 
       # Logs out for now:
-      Pod::UI.puts targets
+      targets.flat_map { |t| t[:pods] }.uniq.sort_by { |p| p[:name] }.each do |pod|
+        Pod::UI.message "#{pod[:name]}, #{pod[:version]}", '- '
+      end
 
       is_pod_try = defined?(Pod::Command::Try::TRY_TMP_DIR) &&
-        context.sandbox_root.begin_with?(Pod::Command::Try::TRY_TMP_DIR.to_s)
+        context.sandbox_root.start_with?(Pod::Command::Try::TRY_TMP_DIR.to_s)
 
       # Send the analytics stuff up
       Sender.new.send(targets, :pod_try => is_pod_try)
