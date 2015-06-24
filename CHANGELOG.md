@@ -1,8 +1,8 @@
 #CocoaPods Stats CHANGELOG
 
-## 0.0.1
+## 0.5.0
 
-* Initial implementation.  
+* Initial implementation of stats uploading.  
   [Orta](https://github.com/orta)
 
 * Refactor of Orta's initial implementation
