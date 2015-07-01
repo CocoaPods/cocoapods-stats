@@ -7,6 +7,14 @@ module CocoaPodsStats
     # generate a collection of hashes
     def pods_from_project(context, master_pods)
       context.umbrella_targets.flat_map do |target|
+        next unless target.user_project_path
+        
+        # These UUIDs come from the Xcode project
+        # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
+
+        project = Xcodeproj::Project.open(target.user_project_path)
+        next unless project
+
         root_specs = target.specs.map(&:root).uniq
 
         # As it's hard to look up the source of a pod, we
@@ -15,11 +23,6 @@ module CocoaPodsStats
         pods = root_specs.
           select { |spec| master_pods.include?(spec.name) }.
           map { |spec| { :name => spec.name, :version => spec.version.to_s } }
-
-        # These UUIDs come from the Xcode project
-        # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
-
-        project = Xcodeproj::Project.open(target.user_project_path)
 
         target.user_target_uuids.map do |uuid|
           project_target = project.objects_by_uuid[uuid]
