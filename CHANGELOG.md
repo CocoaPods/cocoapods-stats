@@ -3,7 +3,7 @@
 ## 0.5.1
 
 * Skips pods that are not integrated ( and thus we can't get UUIDs )
-  [segiddins](https://github.com/segiddins)
+  [Samuel Giddins](https://github.com/CocoaPods/cocoapods-stats/pull/15)
 
 
 ## 0.5.0
