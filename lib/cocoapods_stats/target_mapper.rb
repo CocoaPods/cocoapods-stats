@@ -8,7 +8,7 @@ module CocoaPodsStats
     def pods_from_project(context, master_pods)
       context.umbrella_targets.flat_map do |target|
         next unless target.user_project_path
-        
+
         # These UUIDs come from the Xcode project
         # http://danwright.info/blog/2010/10/xcode-pbxproject-files-3/
 
