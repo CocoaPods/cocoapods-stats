@@ -2,6 +2,10 @@
 
 ## Master
 
+* Don't raise an exception when there's no user project to pull targets from.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.5.2
 
 ##### Bug Fixes

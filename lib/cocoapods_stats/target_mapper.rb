@@ -36,7 +36,7 @@ module CocoaPodsStats
             :platform => project_target.platform_name,
           }
         end
-      end
+      end.compact
     end
   end
 end
