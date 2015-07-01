@@ -1,5 +1,12 @@
 #CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Bug Fixes
+
+* Don't raise an exception when attempting to opt out.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 ## 0.5.1
 
 * Skips pods that are not integrated ( and thus we can't get UUIDs )

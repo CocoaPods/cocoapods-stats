@@ -18,11 +18,11 @@ module CocoaPodsStats
     require 'cocoapods_stats/sender'
 
     validator = OptOutValidator.new
-    break unless validator.validates?
+    next unless validator.validates?
 
     master_source = Pod::SourcesManager.master.first
     validator = SpecsRepoValidator.new
-    break unless validator.validates?(master_source)
+    next unless validator.validates?(master_source)
 
     Pod::UI.titled_section 'Sending stats' do
       master_pods = Set.new(master_source.pods)
