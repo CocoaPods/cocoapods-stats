@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cocoapods-stats (0.5.2)
+    cocoapods-stats (0.5.3)
       nap (~> 0.8)
 
 GEM

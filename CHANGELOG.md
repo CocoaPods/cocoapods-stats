@@ -1,6 +1,8 @@
 #CocoaPods Stats CHANGELOG
 
-## Master
+## 0.5.3
+
+##### Bug Fixes
 
 * Don't raise an exception when there's no user project to pull targets from.  
   [Samuel Giddins](https://github.com/segiddins)
