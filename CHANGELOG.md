@@ -1,5 +1,14 @@
 #CocoaPods Stats CHANGELOG
 
+## 0.5.4
+
+##### Bug Fixes
+
+* Also rescue Errno::EHOSTDOWN when sending stats (could be blocked by a
+  firewall and should not stop the user from installing pods)
+  [Clemens Gruber](https://github.com/clemensg)
+
+
 ## 0.5.3
 
 ##### Bug Fixes
