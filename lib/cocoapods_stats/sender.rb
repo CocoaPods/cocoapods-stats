@@ -5,18 +5,25 @@ module CocoaPodsStats
     API_URL = 'https://stats.cocoapods.org/api/v1/install'
 
     def send(targets, pod_try: false)
-      REST.post(
-        API_URL,
-        {
-          :targets => targets,
-          :cocoapods_version => Pod::VERSION,
-          :pod_try => pod_try,
-        }.to_json,
+      body = {
+        :targets => targets,
+        :cocoapods_version => Pod::VERSION,
+        :pod_try => pod_try,
+      }
+      headers = {
         'Accept' => 'application/json',
         'Content-Type' => 'application/json',
-      )
-    rescue REST::Error => e
-      Pod::UI.message "Failed to send stats:\n\n#{e}"
+      }
+      curl(API_URL, body, headers)
+    end
+
+    private
+
+    def curl(url, json, headers)
+      headers = headers.map { |k, v| ['-H', "#{k}: #{v}"] }.flatten
+      command = ['curl', *headers, '-X', 'POST', '-d', json.to_json, url]
+      dev_null = '/dev/null'
+      Process.spawn(*command, :out => dev_null, :err => dev_null)
     end
   end
 end

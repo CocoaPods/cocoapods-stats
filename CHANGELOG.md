@@ -1,5 +1,13 @@
 #CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Enhancements
+
+* Send stats to the API asynchronously and out of process.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 0.5.3
 
 ##### Bug Fixes
