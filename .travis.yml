@@ -3,6 +3,10 @@
 #
 language: objective-c
 
+branches:
+  only:
+    - master
+
 cache: bundler
 rvm:
   # OS X 10.9.5-10.10.0 (2.0.0-p481)
