@@ -21,7 +21,7 @@ module CocoaPodsStats
 
     def curl(url, json, headers)
       headers = headers.map { |k, v| ['-H', "#{k}: #{v}"] }.flatten
-      command = ['curl', *headers, '-X', 'POST', '-d', json.to_json, url]
+      command = ['curl', *headers, '-X', 'POST', '-d', json.to_json, '-m', '30', url]
       dev_null = '/dev/null'
       Process.spawn(*command, :out => dev_null, :err => dev_null)
     end
