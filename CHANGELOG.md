@@ -7,6 +7,9 @@
 * Send stats to the API asynchronously and out of process.  
   [Samuel Giddins](https://github.com/segiddins)
 
+* Set maximum timeout of 30 seconds for asynchronous stats sending.  
+  [Boris Bügling](https://github.com/neonichu)
+
 
 ## 0.5.3
 
