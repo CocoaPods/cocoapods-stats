@@ -35,7 +35,8 @@ module CocoaPodsStats
         Pod::UI.message "#{pod[:name]}, #{pod[:version]}", '- '
       end
 
-      is_pod_try = defined?(Pod::Command::Try::TRY_TMP_DIR) && Pod::Command::Try::TRY_TMP_DIR.exist? &&
+      is_pod_try = defined?(Pod::Command::Try::TRY_TMP_DIR) &&
+        Pod::Command::Try::TRY_TMP_DIR.exist? &&
         context.sandbox_root.start_with?(Pod::Command::Try::TRY_TMP_DIR.realpath.to_s)
 
       # Send the analytics stuff up
