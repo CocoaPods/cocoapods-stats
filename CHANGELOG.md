@@ -11,7 +11,7 @@
   [Boris Bügling](https://github.com/neonichu)
 
 
-## 0.5.3
+## 0.5.3 (2015-07-02)
 
 ##### Bug Fixes
 
@@ -19,14 +19,14 @@
   [Samuel Giddins](https://github.com/segiddins)
 
 
-## 0.5.2
+## 0.5.2 (2015-07-01)
 
 ##### Bug Fixes
 
 * Don't raise an exception when attempting to opt out.  
   [Samuel Giddins](https://github.com/segiddins)
 
-## 0.5.1
+## 0.5.1 (2015-07-01)
 
 ##### Bug Fixes
 
@@ -34,7 +34,7 @@
   [Samuel Giddins](https://github.com/CocoaPods/cocoapods-stats/pull/15)
 
 
-## 0.5.0
+## 0.5.0 (2015-06-24)
 
 * Initial implementation of stats uploading.  
   [Orta](https://github.com/orta)
