@@ -1,7 +1,7 @@
 module CocoaPodsStats
   class SpecsRepoValidator
     def validates?(source)
-      source && source.url.end_with?('CocoaPods/Specs.git')
+      source && source.url && source.url.end_with?('CocoaPods/Specs.git')
     end
   end
 
