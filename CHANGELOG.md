@@ -1,4 +1,12 @@
-#CocoaPods Stats CHANGELOG
+# CocoaPods Stats CHANGELOG
+
+## 0.6.1 (2015-08-28)
+
+##### Bug Fixes
+
+* This release fixes a file permissions error when using the RubyGem.  
+  [Samuel Giddins](https://github.com/segiddins)
+
 
 ## 0.6.0 (2015-08-26)
 
