@@ -1,6 +1,6 @@
 # cocoapods-stats
 
-A description of cocoapods-stats.
+Collects and sends simple analytics data to the [stats.cocoapods.org](https://stats.cocoapods.org) back-end.
 
 ## Installation
 
