@@ -7,6 +7,7 @@ group :development do
   gem 'cocoapods'
 
   gem 'bacon'
+  gem 'prettybacon'
   gem 'mocha-on-bacon'
 
   gem 'rubocop'
