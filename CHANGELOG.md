@@ -1,5 +1,15 @@
 # CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Bug Fixes
+
+* Don't crash when a source has no URL.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#4093](https://github.com/CocoaPods/CocoaPods/issues/4093)
+  [CocoaPods#4311](https://github.com/CocoaPods/CocoaPods/issues/4311)
+
+
 ## 0.6.1 (2015-08-28)
 
 ##### Bug Fixes
