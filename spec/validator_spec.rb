@@ -7,6 +7,13 @@ describe CocoaPodsStats::SpecsRepoValidator do
       subject.should.not.validates?(nil)
     end
 
+    it 'returns no when given a source with no url' do
+      source = mock(:url => nil)
+
+      subject = CocoaPodsStats::SpecsRepoValidator.new
+      subject.should.not.validates?(source)
+    end
+
     it 'returns no when given a master repo that is not cocoapods/specs' do
       sources = mock
       sources.stubs(:url).returns('CocoaPods/NotSpecs.git')
