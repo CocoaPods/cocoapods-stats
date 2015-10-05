@@ -1,6 +1,6 @@
 # CocoaPods Stats CHANGELOG
 
-## Master
+## 0.6.2 (2015-10-05)
 
 ##### Bug Fixes
 
