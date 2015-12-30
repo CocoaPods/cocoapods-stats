@@ -1,5 +1,10 @@
 # CocoaPods Stats CHANGELOG
 
+## 1.0.0.beta.1 (2015-12-30)
+
+This version contains no changes.  
+
+
 ## 0.6.2 (2015-10-05)
 
 ##### Bug Fixes
