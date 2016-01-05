@@ -4,13 +4,10 @@ require 'cocoapods_stats/target_mapper'
 describe CocoaPodsStats::TargetMapper do
   describe 'pods_from_project' do
     before do
-      project_target = mock
-      project_target.stubs(:product_type).returns('testing')
-      project_target.stubs(:platform_name).returns('test platform')
-
-      project = mock
-      project.stubs(:objects_by_uuid).returns('111222333' => project_target)
-      Xcodeproj::Project.stubs(:open).returns(project)
+      @user_target = mock('PBXNativeTarget')
+      @user_target.stubs(:product_type).returns('testing')
+      @user_target.stubs(:platform_name).returns('test platform')
+      @user_target.stubs(:uuid).returns('111222333')
     end
 
     it 'returns expected data' do
@@ -20,12 +17,12 @@ describe CocoaPodsStats::TargetMapper do
       spec.name = 'ORStackView'
       spec.version = '1.1.1'
 
-      target = mock
+      target = mock('AggregateTarget')
       target.stubs(:specs).returns([spec])
-      target.stubs(:user_target_uuids).returns(['111222333'])
-      target.stubs(:user_project_path).returns('/foo/bar')
+      target.stubs(:user_targets).returns([@user_target])
+      target.stubs(:user_project).returns(mock('Project'))
 
-      context = mock
+      context = mock('Context')
       context.stubs(:umbrella_targets).returns([target])
 
       mapper = CocoaPodsStats::TargetMapper.new
@@ -49,12 +46,12 @@ describe CocoaPodsStats::TargetMapper do
       spec.name = 'ORStackView'
       spec.version = '1.1.1'
 
-      target = mock
+      target = mock('AggregateTarget')
       target.stubs(:specs).returns([spec])
-      target.stubs(:user_target_uuids).returns(['111222333'])
-      target.stubs(:user_project_path).returns('/foo/bar')
+      target.stubs(:user_targets).returns([@user_target])
+      target.stubs(:user_project).returns(mock('Project'))
 
-      context = mock
+      context = mock('Context')
       context.stubs(:umbrella_targets).returns([target])
 
       mapper = CocoaPodsStats::TargetMapper.new
