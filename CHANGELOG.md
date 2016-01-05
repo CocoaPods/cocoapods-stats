@@ -1,5 +1,13 @@
 # CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Enhancements
+
+* Speed up stats collection by not re-opening every user Xcode project.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 1.0.0.beta.1 (2015-12-30)
 
 This version contains no changes.  
