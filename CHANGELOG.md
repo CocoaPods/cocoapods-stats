@@ -1,6 +1,6 @@
 # CocoaPods Stats CHANGELOG
 
-## Master
+## 1.0.0.beta.3 (2016-01-16)
 
 ##### Bug Fixes
 
