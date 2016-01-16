@@ -17,7 +17,7 @@ module CocoaPodsStats
           map { |spec| { :name => spec.name, :version => spec.version.to_s } }
 
         # This will be an empty array for `integrate_targets: false` Podfiles
-        target.user_targets.map do |user_target|
+        user_targets(target).map do |user_target|
           # Send in a digested'd UUID anyway, a second layer
           # of misdirection can't hurt
           {
@@ -28,6 +28,17 @@ module CocoaPodsStats
           }
         end
       end
+    end
+
+    private
+
+    # @todo remove this once everyone has migrated to CocoaPods 1.0, see
+    #       https://github.com/CocoaPods/CocoaPods/issues/4741
+    def user_targets(target)
+      return target.user_targets if target.respond_to?(:user_targets)
+      project = Xcodeproj::Project.open(target.user_project_path) if target.user_project_path
+      return [] unless project
+      target.user_target_uuids.map { |uuid| project.objects_by_uuid[uuid] }.compact
     end
   end
 end

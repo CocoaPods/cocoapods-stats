@@ -1,5 +1,14 @@
 # CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Bug Fixes
+
+* Introduce a compatibility shim for CocoaPods 0.39.  
+  [Samuel Giddins](https://github.com/segiddins)
+  [CocoaPods#4741](https://github.com/CocoaPods/CocoaPods/issues/4741)
+
+
 ## 1.0.0.beta.2 (2016-01-05)
 
 ##### Enhancements
