@@ -26,7 +26,7 @@ describe CocoaPodsStats::TargetMapper do
     end
 
     it 'returns expected data' do
-      master_pods  = Set.new(['ORStackView'])
+      master_pods = Set.new(['ORStackView'])
 
       mapper = CocoaPodsStats::TargetMapper.new
       pods = mapper.pods_from_project(@context, master_pods)

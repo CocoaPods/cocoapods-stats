@@ -13,8 +13,8 @@ module CocoaPodsStats
         # can check if the pod exists in the master specs repo though
 
         pods = root_specs.
-          select { |spec| master_pods.include?(spec.name) }.
-          map { |spec| { :name => spec.name, :version => spec.version.to_s } }
+               select { |spec| master_pods.include?(spec.name) }.
+               map { |spec| { :name => spec.name, :version => spec.version.to_s } }
 
         # This will be an empty array for `integrate_targets: false` Podfiles
         user_targets(target).map do |user_target|
