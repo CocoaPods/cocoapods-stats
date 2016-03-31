@@ -20,7 +20,8 @@ module CocoaPodsStats
     validator = OptOutValidator.new
     next unless validator.validates?
 
-    master_source = Pod::SourcesManager.master.first
+    sources_manager = defined?(Pod::SourcesManager) ? Pod::SourcesManager : Pod::Config.instance.sources_manager
+    master_source =  sources_manager.master.first
     validator = SpecsRepoValidator.new
     next unless validator.validates?(master_source)
 
