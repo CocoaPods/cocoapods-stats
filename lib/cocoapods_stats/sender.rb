@@ -2,7 +2,7 @@ require 'rest'
 
 module CocoaPodsStats
   class Sender
-    API_URL = 'https://stats.cocoapods.org/api/v1/install'
+    API_URL = 'https://stats.cocoapods.org/api/v1/install'.freeze
 
     def send(targets, pod_try: false)
       body = {
