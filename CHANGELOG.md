@@ -1,5 +1,13 @@
 # CocoaPods Stats CHANGELOG
 
+## Master
+
+##### Bug Fixes
+
+* Compatibility with CocoaPods 1.0.0.beta.7.  
+  [Samuel Giddins](https://github.com/segiddins)
+
+
 ## 1.0.0.beta.3 (2016-01-16)
 
 ##### Bug Fixes
