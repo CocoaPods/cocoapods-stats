@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cocoapods-stats (1.0.0.beta.3)
+    cocoapods-stats (1.0.0.beta.4)
 
 GEM
   remote: https://rubygems.org/
