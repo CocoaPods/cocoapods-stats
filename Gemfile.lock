@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    cocoapods-stats (1.0.0)
+    cocoapods-stats (1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -106,4 +106,4 @@ DEPENDENCIES
   rubocop
 
 BUNDLED WITH
-   1.16.2
+   1.16.3

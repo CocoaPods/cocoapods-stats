@@ -1,6 +1,6 @@
 # CocoaPods Stats CHANGELOG
 
-## Master
+## 1.1.0 (2019-01-24)
 
 ##### Enhancements
 
