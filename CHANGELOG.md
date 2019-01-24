@@ -4,7 +4,8 @@
 
 ##### Enhancements
 
-* None.  
+* Networking requests are sent on a forked process.  
+  [Eric Amorde](https://github.com/amorde)
 
 ##### Bug Fixes
 
