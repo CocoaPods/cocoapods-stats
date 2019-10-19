@@ -1,5 +1,10 @@
 # CocoaPods Stats CHANGELOG
 
+##### Enhancements
+
+* Disables the hook, because the server hasn't been keeping track of stats for years.  
+  [Orta Therox](https://github.com/orta)
+
 ## 1.1.0 (2019-01-24)
 
 ##### Enhancements
