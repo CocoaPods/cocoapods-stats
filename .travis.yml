@@ -1,4 +1,8 @@
 cache: bundler
+
+language: ruby
+dist: trusty
+
 rvm:
   # Same rubies as CP
   - 2.0.0-p647
