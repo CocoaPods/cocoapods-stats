@@ -13,7 +13,7 @@ describe CocoaPodsStats::OptOutValidator do
       ENV['COCOAPODS_DISABLE_STATS'] = nil
 
       subject = CocoaPodsStats::OptOutValidator.new
-      subject.should.validates
+      subject.should.not.validates
     end
   end
 end

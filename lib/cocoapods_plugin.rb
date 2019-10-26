@@ -7,7 +7,8 @@ module CocoaPodsStats
 
   class OptOutValidator
     def validates?
-      ENV['COCOAPODS_DISABLE_STATS'].nil?
+      # Never runs the uploader, as it's not being used
+      false
     end
   end
 
